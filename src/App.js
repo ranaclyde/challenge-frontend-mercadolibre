@@ -1,12 +1,12 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Container } from '@chakra-ui/react';
+import Navbar from './components/Navbar';
 
-function App() {
+const App = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+      <Navbar />
+      <Container alignSelf="center" maxWidth="container.xl" paddingX={0}>
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
@@ -18,9 +18,9 @@ function App() {
         >
           Learn React
         </a>
-      </header>
+      </Container>
     </div>
   );
-}
+};
 
 export default App;
