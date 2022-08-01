@@ -27,7 +27,7 @@ const Navbar = () => {
 
   return (
     <>
-      <Box backgroundColor="primary.500" paddingY={4} boxShadow="sm">
+      <Box backgroundColor="primary.500" paddingY={4} paddingX={{base: 4, md: 0}} boxShadow="sm">
         <Container maxWidth="container.xl" paddingX={0}>
           <Stack direction="row">
             <Image

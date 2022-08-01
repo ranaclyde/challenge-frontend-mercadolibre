@@ -33,13 +33,14 @@ const Items = () => {
         products.map((product) => (
           <Stack key={product.id} direction="row" backgroundColor="white">
             <Stack
-              direction="row"
+              direction={{base: 'column', md: 'row'}}
               boxShadow="md"
               borderColor="gray.200"
               margin={3}
               width="100%"
               padding={2}
               onClick={() => navigate(`/items/${product.id}`)}
+              cursor="pointer"
             >
               <Image
                 src={product.thumbnail}
