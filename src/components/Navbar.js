@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, createSearchParams } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import {
   Box,
@@ -6,31 +7,23 @@ import {
   Icon,
   Image,
   Input,
-  Spacer,
   Stack,
   StackDivider,
-  Text,
 } from '@chakra-ui/react';
 import { AiOutlineSearch } from 'react-icons/ai';
 
-import { getProducts } from '../api/products';
-
 const Navbar = () => {
+  const navigate = useNavigate();
   const [query, setQuery] = useState('');
-  const [products, setProducts] = useState([]);
-  const [errorState, setErrorState] = useState({ hasError: false });
 
   useEffect(() => {
-    if (query.length >= 3) {
-    getProducts(query)
-      .then((data) => setProducts(data.results.slice(0, 4)))
-      .catch(handleError);
+    if (query.length > 0) {
+      navigate({
+        pathname: '/items',
+        search: `?${createSearchParams({ search: query })}`,
+      });
     }
   }, [query]);
-
-  const handleError = (err) => {
-    setErrorState({ hasError: true, message: err.message });
-  };
 
   return (
     <>
@@ -71,38 +64,6 @@ const Navbar = () => {
           </Stack>
         </Container>
       </Box>
-      <Container alignSelf="center" maxWidth="container.xl" paddingX={0} marginY={4}>
-        {errorState.hasError && <div>{errorState.message}</div>}
-        {products &&
-          products.map((product) => (
-            <Stack key={product.id} direction="row" backgroundColor="white">
-              <Stack
-                direction="row"
-                boxShadow="md"
-                borderColor="gray.200"
-                margin={3}
-                width="100%"
-                padding={2}
-              >
-                <Image
-                  src={product.thumbnail}
-                  width="160px"
-                  height="160px"
-                  objectFit="contain"
-                  marginRight={3}
-                />
-                <Stack>
-                  <Text fontSize="4xl">$ {product.price}</Text>
-                  <Text fontSize="xl" color="gray.600">{product.title}</Text>
-                </Stack>
-                <Spacer />
-                <Stack>
-                  <Text fontSize="xl">{product.address.city_name}</Text>
-                </Stack>
-              </Stack>
-            </Stack>
-          ))}
-      </Container>
     </>
   );
 };
