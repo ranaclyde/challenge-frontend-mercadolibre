@@ -5,12 +5,17 @@ import Navbar from './components/Navbar';
 
 const App = () => {
   return (
-    <div className="App">
+    <>
       <Navbar />
-      <Container alignSelf="center" maxWidth="container.xl" paddingX={0} marginY={4}>
+      <Container
+        alignSelf="center"
+        maxWidth="container.xl"
+        paddingX={0}
+        marginY={4}
+      >
         <Outlet />
       </Container>
-    </div>
+    </>
   );
 };
 
