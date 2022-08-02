@@ -12,6 +12,7 @@ import {
 
 import { getProduct } from '../actions/itemAction';
 import { connect } from 'react-redux';
+import BreadcrumbBar from './BreadcrumbBar';
 
 const Prices = ({ price }) => {
   const salePrice = String(price.amount).split('.');
@@ -46,6 +47,7 @@ const DetailItem = ({ getProduct, item }) => {
 
   return (
     <>
+      <BreadcrumbBar itemCategory={item.category_id} />
       {errorState.hasError && <div>{errorState.message}</div>}
       <Stack
         direction={{ base: 'column', md: 'column' }}

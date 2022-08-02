@@ -5,6 +5,8 @@ import { Image, Spacer, Stack, Text } from '@chakra-ui/react';
 import { getProducts } from '../actions/itemAction';
 import { connect } from 'react-redux';
 
+import BreadcrumbBar from './BreadcrumbBar';
+
 const Items = ({ items, getProducts }) => {
   const navigate = useNavigate();
   let [searchParams, setSearchParams] = useSearchParams();
@@ -24,6 +26,7 @@ const Items = ({ items, getProducts }) => {
 
   return (
     <>
+      <BreadcrumbBar />
       {errorState.hasError && <div>{errorState.message}</div>}
       {items &&
         items.map((product) => (
@@ -64,6 +67,7 @@ const Items = ({ items, getProducts }) => {
 
 const mapStateToProps = (state) => ({
   items: state.itemReducer.getItems.items,
+  categories: state.itemReducer.getItems.categories,
   author: state.itemReducer.getItems.author,
 });
 
