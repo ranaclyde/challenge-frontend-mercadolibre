@@ -7,12 +7,16 @@ export const getProducts =
   (query = '') =>
   async (dispatch) => {
     try {
-      const response = await fetch(`${apiUrl}/items?q=${query}`);
-      const data = await response.json();
-      dispatch({
-        type: itemTypes.getItems,
-        payload: data,
-      });
+      const res = await axios.get(`${apiUrl}/items?q=${query}`);
+      const values = {
+        ...res.data,
+        items: res.data.items.slice(0, 4),
+        author: {
+          name: 'Matias Emanuel',
+          lastname: 'Sanhueza',
+        },
+      };
+      dispatch(actionProducts(values));
     } catch (err) {
       return new Error(err);
     }
@@ -40,6 +44,13 @@ export const getProduct = (id) => async (dispatch) => {
 export const actionProduct = (values) => {
   return {
     type: itemTypes.getItem,
+    payload: values,
+  };
+};
+
+export const actionProducts = (values) => {
+  return {
+    type: itemTypes.getItems,
     payload: values,
   };
 };

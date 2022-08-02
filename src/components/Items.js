@@ -2,23 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Image, Spacer, Stack, Text } from '@chakra-ui/react';
 
-import { getProducts } from '../api/products';
+import { getProducts } from '../actions/itemAction';
+import { connect } from 'react-redux';
 
-const Items = () => {
+const Items = ({ items, getProducts }) => {
   const navigate = useNavigate();
   let [searchParams, setSearchParams] = useSearchParams();
 
-  const [products, setProducts] = useState([]);
   const [errorState, setErrorState] = useState({ hasError: false });
 
   useEffect(() => {
     let query = searchParams.get('search');
     if (query && query.length >= 3) {
-      getProducts(query)
-        .then((data) => setProducts(data.results.slice(0, 4)))
-        .catch(handleError);
-    } else {
-      setProducts([]);
+      getProducts(query);
     }
   }, [searchParams]);
 
@@ -29,11 +25,11 @@ const Items = () => {
   return (
     <>
       {errorState.hasError && <div>{errorState.message}</div>}
-      {products &&
-        products.map((product) => (
+      {items &&
+        items.map((product) => (
           <Stack key={product.id} direction="row" backgroundColor="white">
             <Stack
-              direction={{base: 'column', md: 'row'}}
+              direction={{ base: 'column', md: 'row' }}
               boxShadow="md"
               borderColor="gray.200"
               margin={3}
@@ -43,21 +39,21 @@ const Items = () => {
               cursor="pointer"
             >
               <Image
-                src={product.thumbnail}
+                src={product.picture}
                 width="160px"
                 height="160px"
                 objectFit="contain"
                 marginRight={3}
               />
               <Stack>
-                <Text fontSize="4xl">$ {product.price}</Text>
+                <Text fontSize="4xl">$ {product.price.amount}</Text>
                 <Text fontSize="xl" color="gray.600">
                   {product.title}
                 </Text>
               </Stack>
               <Spacer />
               <Stack>
-                <Text fontSize="xl">{product.address.city_name}</Text>
+                <Text fontSize="xl">{product.condition}</Text>
               </Stack>
             </Stack>
           </Stack>
@@ -66,4 +62,9 @@ const Items = () => {
   );
 };
 
-export default Items;
+const mapStateToProps = (state) => ({
+  items: state.itemReducer.getItems.items,
+  author: state.itemReducer.getItems.author,
+});
+
+export default connect(mapStateToProps, { getProducts })(Items);
